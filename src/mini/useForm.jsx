@@ -5,6 +5,14 @@ class FormStore {
   constructor() {
     this.store = {}
     this.entities = []
+    this.callbacks = {}
+  }
+
+  setCallbacks = (newCallbacks) => {
+    this.callbacks = {
+      ...this.callbacks,
+      ...newCallbacks,
+    }
   }
 
   registerEntity = (entity) => {
@@ -44,12 +52,29 @@ class FormStore {
     })
   }
 
+  validate = () => {
+    // TODO:
+    return true
+  }
+
+  submit = () => {
+    const { onFinish, onFinishFailed } = this.callbacks
+    const validateRes = this.validate()
+    if (validateRes) {
+      onFinish(this.getFieldsValue())
+    } else {
+      onFinishFailed({ hasError: true, errorFields: [] })
+    }
+  }
+
   getForm = () => {
     return {
       getFieldValue: this.getFieldValue,
       getFieldsValue: this.getFieldsValue,
       setFieldValue: this.setFieldValue,
       registerEntity: this.registerEntity,
+      submit: this.submit,
+      setCallbacks: this.setCallbacks,
     }
   }
 }
