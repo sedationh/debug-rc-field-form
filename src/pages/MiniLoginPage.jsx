@@ -5,11 +5,8 @@ import Field from "../mini/Field.jsx"
 import useForm from "../mini/useForm"
 
 function MiniLoginPage() {
-  const [form] = useForm()
-
   return (
     <Form
-      form={form}
       onFinish={(values) => {
         console.log("Finish:", values)
       }}

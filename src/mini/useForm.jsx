@@ -4,6 +4,16 @@ import { useRef } from "react"
 class FormStore {
   constructor() {
     this.store = {}
+    this.entities = []
+  }
+
+  registerEntity = (entity) => {
+    this.entities.push(entity)
+
+    return () => {
+      this.entities = this.entities.filter((item) => item !== entity)
+      delete this.store[entity.props.name]
+    }
   }
 
   // get
@@ -17,10 +27,21 @@ class FormStore {
 
   // set
   setFieldValue = (newStore) => {
+    console.log("sedationh setFieldValue", newStore)
+    // 1. 更新 store
     this.store = {
       ...this.store,
       ...newStore,
     }
+    // 2. 更新组件
+    this.entities.forEach((entity) => {
+      const { name } = entity.props
+      Object.keys(newStore).forEach((key) => {
+        if (key === name) {
+          entity.onStoreChange()
+        }
+      })
+    })
   }
 
   getForm = () => {
@@ -28,6 +49,7 @@ class FormStore {
       getFieldValue: this.getFieldValue,
       getFieldsValue: this.getFieldsValue,
       setFieldValue: this.setFieldValue,
+      registerEntity: this.registerEntity,
     }
   }
 }
