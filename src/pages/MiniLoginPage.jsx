@@ -1,9 +1,9 @@
 import React from "react"
 import Input from "../component/Input"
-import Form, { Field } from "rc-field-form"
+import Form from "../mini/Form.jsx"
+import Field from "../mini/Field.jsx"
 
-function LoginPage() {
-  console.log("LoginPage render")
+function MiniLoginPage() {
   return (
     <Form
       onFinish={(values) => {
@@ -32,4 +32,4 @@ function LoginPage() {
   )
 }
 
-export default LoginPage
+export default MiniLoginPage
