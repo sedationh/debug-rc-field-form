@@ -103,6 +103,7 @@ export interface FieldState {
   resetCount: number;
 }
 
+// STUDY: seda 这里用的是类组件
 // We use Class instead of Hooks here since it will cost much code by using Hooks.
 class Field extends React.Component<InternalFieldProps, FieldState> implements FieldEntity {
   public static contextType = FieldContext;
