@@ -2,7 +2,6 @@ import React from "react"
 import Input from "../component/Input"
 import Form from "../mini/Form.jsx"
 import Field from "../mini/Field.jsx"
-import useForm from "../mini/useForm"
 
 function MiniLoginPage() {
   return (
@@ -18,6 +17,7 @@ function MiniLoginPage() {
         rules={[
           {
             required: true,
+            message: "Please input your username!"
           },
         ]}
         name="username"

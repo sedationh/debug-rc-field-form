@@ -53,17 +53,32 @@ class FormStore {
   }
 
   validate = () => {
-    // TODO:
-    return true
+    const err = []
+
+    this.entities.forEach((entity) => {
+      const { name, rules } = entity.props
+
+      if (!rules?.length) return
+
+      const value = this.getFieldValue(name)
+      const rule = rules[0]
+
+      if (rule && rule.required && (value === undefined || value === "")) {
+        err.push({ [name]: rule.message, value })
+      }
+    })
+
+    return err
   }
 
   submit = () => {
     const { onFinish, onFinishFailed } = this.callbacks
     const validateRes = this.validate()
-    if (validateRes) {
+
+    if (!validateRes.length) {
       onFinish(this.getFieldsValue())
     } else {
-      onFinishFailed({ hasError: true, errorFields: [] })
+      onFinishFailed(validateRes)
     }
   }
 
