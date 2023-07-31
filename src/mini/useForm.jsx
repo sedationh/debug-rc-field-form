@@ -34,7 +34,7 @@ class FormStore {
   }
 
   // set
-  setFieldValue = (newStore) => {
+  setFieldsValue = (newStore) => {
     console.log("sedationh setFieldValue", newStore)
     // 1. 更新 store
     this.store = {
@@ -74,7 +74,6 @@ class FormStore {
   submit = () => {
     const { onFinish, onFinishFailed } = this.callbacks
     const validateRes = this.validate()
-
     if (!validateRes.length) {
       onFinish(this.getFieldsValue())
     } else {
@@ -86,7 +85,7 @@ class FormStore {
     return {
       getFieldValue: this.getFieldValue,
       getFieldsValue: this.getFieldsValue,
-      setFieldValue: this.setFieldValue,
+      setFieldsValue: this.setFieldsValue,
       registerEntity: this.registerEntity,
       submit: this.submit,
       setCallbacks: this.setCallbacks,
@@ -94,13 +93,17 @@ class FormStore {
   }
 }
 
-export default function useForm() {
+export default function useForm(form) {
   // 存储 FormStore 实例，在组件的整个生命周期中，只会有一个 FormStore 实例
 
   const formRef = useRef()
   if (formRef.current === undefined) {
-    const formStore = new FormStore()
-    formRef.current = formStore.getForm()
+    if (form) {
+      formRef.current = form
+    } else {
+      const formStore = new FormStore()
+      formRef.current = formStore.getForm()
+    }
   }
 
   return [formRef.current]

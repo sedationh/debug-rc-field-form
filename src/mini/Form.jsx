@@ -2,11 +2,8 @@ import React, { PropsWithChildren } from "react"
 import { FieldContext } from "./FieldContext"
 import useForm from "./useForm"
 
-function Form({ onFinish, onFinishFailed, children, form: _form }) {
-  let form = _form
-  if (!form) {
-    ;[form] = useForm()
-  }
+function Form({ onFinish, onFinishFailed, children, form: formProp }) {
+  const [form] = useForm(formProp)
 
   form.setCallbacks({
     onFinish,
@@ -18,7 +15,6 @@ function Form({ onFinish, onFinishFailed, children, form: _form }) {
     <form
       onSubmit={(e) => {
         e.preventDefault()
-        onFinish(form.getFieldsValue())
         form.submit()
       }}
     >
