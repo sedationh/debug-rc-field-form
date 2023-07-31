@@ -1,8 +1,8 @@
-import React, { PropsWithChildren } from "react"
+import React, { forwardRef, useImperativeHandle } from "react"
 import { FieldContext } from "./FieldContext"
 import useForm from "./useForm"
 
-function Form({ onFinish, onFinishFailed, children, form: formProp }) {
+const Form = forwardRef(({ onFinish, onFinishFailed, children, form: formProp }, ref) => {
   const [form] = useForm(formProp)
 
   form.setCallbacks({
@@ -11,6 +11,15 @@ function Form({ onFinish, onFinishFailed, children, form: formProp }) {
   })
 
   console.log("sedationh Form render")
+
+  // 使用 useImperativeHandle 将指定方法暴露给父组件
+  useImperativeHandle(ref, () => ({
+    submit: form.submit,
+    resetFields: form.resetFields,
+    setFieldsValue: form.setFieldsValue,
+    getFieldsValue: form.getFieldsValue,
+  }))
+
   return (
     <form
       onSubmit={(e) => {
@@ -21,6 +30,6 @@ function Form({ onFinish, onFinishFailed, children, form: formProp }) {
       <FieldContext.Provider value={form}>{children}</FieldContext.Provider>
     </form>
   )
-}
+})
 
 export default Form

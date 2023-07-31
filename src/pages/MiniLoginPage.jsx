@@ -1,19 +1,20 @@
-import React from "react"
+import React, { useRef, useEffect } from "react"
 import Input from "../component/Input"
 import Form from "../mini/Form.jsx"
 import Field from "../mini/Field.jsx"
-import useForm from "../mini/useForm"
 
 function MiniLoginPage() {
-  const [form] = useForm()
+  const formRef = useRef()
 
-  React.useEffect(() => {
-    form.setFieldsValue({ username: "default" })
+  useEffect(() => {
+    formRef.current.setFieldsValue({
+      username: "hi",
+    })
   }, [])
 
   return (
     <Form
-      form={form}
+      ref={formRef}
       onFinish={(values) => {
         console.log("Finish:", values)
       }}
